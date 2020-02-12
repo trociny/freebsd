@@ -38,6 +38,7 @@ __FBSDID("$FreeBSD$");
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <pthread.h>
 #include <pthread_np.h>
 #include <signal.h>
@@ -330,7 +331,17 @@ blockif_open(const char *optstr, const char *ident)
 		return (NULL);
 	}
 
-	be = block_emul_finddev("file");
+	if (strncmp(optstr, "rbd:", 4) == 0) {
+		optstr += 4;
+		be = block_emul_finddev("rbd");
+		if (be == NULL) {
+			errno = ENOTSUP;
+			perror("rbd");
+			return (NULL);
+		}
+	} else {
+		be = block_emul_finddev("file");
+	}
 	assert(be != NULL);
 
 	if (be->bd_open(optstr, &dev, &candelete, &ro, &size, &sectsz, &psectsz,

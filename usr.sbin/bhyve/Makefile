@@ -73,6 +73,13 @@ SRCS=	\
 	spinup_ap.c		\
 	iov.c
 
+.if defined(BHYVE_RBD)
+LOCALBASE?=	/usr/local
+CFLAGS+=	-I${LOCALBASE}/include
+LDFLAGS+=	-L${LOCALBASE}/lib -lrados -lrbd
+SRCS+=	block_rbd.c
+.endif
+
 .PATH:  ${BHYVE_SYSDIR}/sys/amd64/vmm
 SRCS+=	vmm_instruction_emul.c
 
