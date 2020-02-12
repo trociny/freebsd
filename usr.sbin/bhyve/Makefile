@@ -19,6 +19,8 @@ SRCS=	\
 	audio.c			\
 	bhyvegc.c		\
 	bhyverun.c		\
+	block_emul.c		\
+	block_file.c		\
 	block_if.c		\
 	bootrom.c		\
 	console.c		\
