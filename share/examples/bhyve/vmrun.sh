@@ -258,6 +258,12 @@ fi
 make_and_check_diskdev()
 {
     local virtio_diskdev="$1"
+
+    # Skip RBD device
+    if [ ${virtio_diskdev#rbd:} != ${virtio_diskdev} ]; then
+        return
+    fi
+
     # Create the virtio diskdev file if needed
     if [ ! -e ${virtio_diskdev} ]; then
 	    echo "virtio disk device file \"${virtio_diskdev}\" does not exist."
